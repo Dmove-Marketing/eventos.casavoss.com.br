@@ -18,6 +18,11 @@
       "fields_required": ["nome", "email", "telefone"]
     }
   },
+  "deploy": {
+    "user": "root",
+    "server": "157.173.197.116",
+    "remote_path": "/var/www/eventos.casavoss.com.br"
+  },
   "meta": {
     "created_at": "2026-04-25",
     "last_updated": "2026-04-25",
