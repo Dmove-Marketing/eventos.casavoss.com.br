@@ -251,6 +251,24 @@ const groupCls  = (full?: boolean) => {
         const hp = form.querySelector<HTMLInputElement>('[name="website"]');
         if (hp && hp.value) return;
 
+        // Required field validation
+        let formIsValid = true;
+        form.querySelectorAll('[required]').forEach((el) => {
+          const field = el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+          const empty = field.value.trim() === '';
+          const group = field.closest('[class*="form-group"]') as HTMLElement | null;
+          const errSpan = group?.querySelector('[class*="field-error"]') as HTMLElement | null;
+          if (empty) {
+            formIsValid = false;
+            field.classList.add('error');
+            if (errSpan) errSpan.classList.add('visible');
+          } else {
+            field.classList.remove('error');
+            if (errSpan) errSpan.classList.remove('visible');
+          }
+        });
+        if (!formIsValid) return;
+
         const submitBtn  = form.querySelector<HTMLButtonElement>('.form-submit');
         const btnText    = form.querySelector<HTMLElement>('.btn-text');
         const btnLoading = form.querySelector<HTMLElement>('.btn-loading');

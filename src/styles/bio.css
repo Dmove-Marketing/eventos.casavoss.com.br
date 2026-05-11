@@ -7,9 +7,9 @@
         }
 
         :root {
-            --verde: #1a2e1a;
-            --verde-medio: #2d4a2d;
-            --verde-claro: #3d5e3d;
+            --verde: #25261F;
+            --verde-medio: #25261F;
+            --verde-claro: #25261F;
             --bege: #f0ebe0;
             --bege-escuro: #d9d0be;
             --branco: #fafaf7;
@@ -76,7 +76,7 @@
         .bio-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(26, 46, 26, .25) 0%, rgba(26, 46, 26, .55) 40%, rgba(26, 46, 26, .82) 100%)
+            background: linear-gradient(180deg, rgba(37, 38, 31, .25) 0%, rgba(37, 38, 31, .55) 40%, rgba(37, 38, 31, .82) 100%)
         }
 
         .bio-content {
@@ -132,14 +132,14 @@
             font-weight: 300;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: var(--cobre);
+            color: #ffffff;
             text-align: center;
             margin-bottom: 36px;
-            opacity: .8
+            opacity: 1
         }
 
         .bio-form-card {
-            background: rgba(26, 46, 26, .88);
+            background: rgba(37, 38, 31, .88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(240, 235, 224, .08);
@@ -173,7 +173,7 @@
             font-size: 9px;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            color: rgba(240, 235, 224, .4);
+            color: rgba(255, 255, 255, .7);
             font-weight: 300
         }
 
@@ -184,7 +184,7 @@
             padding: 13px 15px;
             background: rgba(240, 235, 224, .06);
             border: 1px solid rgba(240, 235, 224, .12);
-            color: var(--bege);
+            color: #ffffff;
             font-size: 14px;
             font-weight: 300;
             outline: none;
@@ -196,7 +196,7 @@
 
         .bio-input::placeholder,
         .bio-textarea::placeholder {
-            color: rgba(240, 235, 224, .2)
+            color: rgba(255, 255, 255, .35)
         }
 
         .bio-input:focus,
@@ -317,14 +317,14 @@
         .bio-form-footer {
             font-family: 'Inter', sans-serif;
             font-size: 11px;
-            color: rgba(240, 235, 224, .22);
+            color: rgba(255, 255, 255, .3);
             text-align: center;
             margin-top: 14px;
             line-height: 1.6
         }
 
         .bio-footer {
-            background: #0f1a0f;
+            background: #25261F;
             padding: 40px 60px 32px;
             display: flex;
             justify-content: space-between;
@@ -1106,7 +1106,7 @@
             }
 
             .bio-overlay {
-                background: linear-gradient(180deg, rgba(26, 46, 26, .35) 0%, rgba(26, 46, 26, .6) 35%, rgba(26, 46, 26, .88) 100%)
+                background: linear-gradient(180deg, rgba(37, 38, 31, .35) 0%, rgba(37, 38, 31, .6) 35%, rgba(37, 38, 31, .88) 100%)
             }
 
             .bio-tag {

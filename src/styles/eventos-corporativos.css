@@ -7,9 +7,9 @@
         }
 
         :root {
-            --verde: #1a2e1a;
-            --verde-medio: #2d4a2d;
-            --verde-claro: #3d5e3d;
+            --verde: #25261F;
+            --verde-medio: #9AA89B;
+            --verde-claro: #25261F;
             --bege: #f0ebe0;
             --bege-escuro: #d9d0be;
             --branco: #fafaf7;
@@ -63,7 +63,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 24px 60px;
-            background: rgba(26, 46, 26, .92);
+            background: rgba(37, 38, 31, .92);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             transition: padding .4s
@@ -74,13 +74,15 @@
         }
 
         .nav-logo {
-            font-family: 'Apparat', 'Inter', sans-serif;
-            font-size: 20px;
-            font-weight: 400;
-            color: var(--bege);
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            text-decoration: none
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center
+        }
+
+        .nav-logo-img {
+            height: 24px;
+            width: auto;
+            display: block
         }
 
         .nav-links {
@@ -149,7 +151,7 @@
             position: fixed;
             inset: 0;
             z-index: 105;
-            background: rgba(26, 46, 26, .98);
+            background: rgba(37, 38, 31, .98);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             flex-direction: column;
@@ -211,10 +213,9 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_01-Recepcao.avif');
-            background-size: cover;
-            background-position: center;
-            background-color: var(--verde-medio);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             opacity: .6;
             transform: scale(1.04);
             animation: heroZoom 12s ease-out forwards
@@ -229,7 +230,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(26, 46, 26, .75) 0%, rgba(26, 46, 26, .18) 50%, rgba(26, 46, 26, .05) 100%)
+            background: linear-gradient(to top, rgba(37, 38, 31, .75) 0%, rgba(37, 38, 31, .18) 50%, rgba(37, 38, 31, .05) 100%)
         }
 
         .hero-content {
@@ -361,7 +362,7 @@
         }
 
         .sobre-img {
-            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_14-Fachada_resultado.avif');
+            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/05/WhatsApp-Image-2026-04-30-at-11.40.19-AM.avif');
             background-size: cover;
             background-position: center;
             background-color: var(--verde-medio);
@@ -573,7 +574,7 @@
 
         .exp-tipos-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 2px
         }
 
@@ -591,30 +592,15 @@
         }
 
         .exp-tipo-icon {
-            width: 62px;
-            height: 62px;
-            border: 1px solid rgba(139, 106, 62, .35);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 40%;
             margin: 0 auto 28px;
-            transition: background .3s, border-color .3s
         }
 
-        .exp-tipo-card:hover .exp-tipo-icon {
-            background: rgba(139, 106, 62, .12);
-            border-color: var(--cobre)
-        }
-
-        .exp-tipo-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--cobre);
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round
+        .exp-tipo-icon img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block
         }
 
         .exp-tipo-title {
@@ -710,15 +696,15 @@
         }
 
         .dif-card {
-            background: rgba(26, 46, 26, .02);
-            border: 1px solid rgba(26, 46, 26, .07);
+            background: rgba(37, 38, 31, .02);
+            border: 1px solid rgba(37, 38, 31, .07);
             padding: 44px 36px;
             text-align: center;
             transition: background .4s, border-color .4s
         }
 
         .dif-card:hover {
-            background: rgba(26, 46, 26, .05);
+            background: rgba(37, 38, 31, .05);
             border-color: rgba(139, 106, 62, .3)
         }
 
@@ -865,13 +851,13 @@
         }
 
         .contato-info .section-title {
-            color: var(--bege);
+            color: #ffffff;
             margin-bottom: 20px
         }
 
         .contato-info .section-body {
             font-family: 'Inter', sans-serif;
-            color: rgba(240, 235, 224, .55);
+            color: rgba(255, 255, 255, .7);
             font-size: 15px;
             line-height: 1.85;
             margin-bottom: 40px;
@@ -1001,7 +987,7 @@
             font-size: 9px;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            color: rgba(240, 235, 224, .4);
+            color: rgba(255, 255, 255, .7);
             font-weight: 300
         }
 
@@ -1012,7 +998,7 @@
             padding: 13px 15px;
             background: rgba(240, 235, 224, .06);
             border: 1px solid rgba(240, 235, 224, .12);
-            color: var(--bege);
+            color: #ffffff;
             font-size: 14px;
             font-weight: 300;
             outline: none;
@@ -1024,7 +1010,7 @@
 
         .corporativo-input::placeholder,
         .corporativo-textarea::placeholder {
-            color: rgba(240, 235, 224, .2)
+            color: rgba(255, 255, 255, .35)
         }
 
         .corporativo-input:focus,
@@ -1145,7 +1131,7 @@
         .corporativo-form-footer {
             font-family: 'Inter', sans-serif;
             font-size: 11px;
-            color: rgba(240, 235, 224, .22);
+            color: rgba(255, 255, 255, .3);
             text-align: center;
             margin-top: 14px;
             line-height: 1.6
@@ -1829,7 +1815,7 @@
         }
 
         footer {
-            background: #0f1a0f;
+            background: #25261F;
             padding: 72px 60px 40px;
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -1837,9 +1823,27 @@
         }
 
         .footer-brand .nav-logo {
-            font-size: 22px;
-            display: block;
+            display: inline-flex;
             margin-bottom: 20px
+        }
+
+        .footer-brand .nav-logo-img {
+            height: 22px
+        }
+
+        .footer-trabalhe-btn {
+            margin-top: 18px;
+            display: inline-block;
+            font-family: 'Apparat', 'Inter', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(240, 235, 224, .4);
+            border: 1px solid rgba(240, 235, 224, .2);
+            background: transparent;
+            padding: 10px 20px;
+            cursor: not-allowed;
+            opacity: .5
         }
 
         .footer-desc {
@@ -2162,9 +2166,13 @@
             }
 
             .stat-item {
-                flex: 1 1 50%;
+                flex: 1 1 33.33%;
                 max-width: none;
                 padding: 28px 20px
+            }
+
+            .nav-logo-img {
+                height: 20px
             }
 
             .sobre {
@@ -2388,6 +2396,17 @@
         }
 
         @media(max-width:380px) {
+            .stat-item {
+                flex: 1 1 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(240, 235, 224, .12);
+                padding: 22px 16px
+            }
+
+            .stat-item:last-child {
+                border-bottom: none
+            }
+
             .corporativo-form-card {
                 padding: 24px 16px
             }
