@@ -12,7 +12,7 @@ var GTM_ID = 'GTM-XXXXXXX';
         })(window, document, 'script', 'dataLayer', GTM_ID);
 
 var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
-        var WPP_NUMBER = '5511999999999';
+        var WPP_NUMBER = '5511912176072';
         window.dataLayer = window.dataLayer || [];
 
         (function () {
