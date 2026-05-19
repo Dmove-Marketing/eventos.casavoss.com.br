@@ -807,7 +807,7 @@
 
         .galeria {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: 320px 320px;
             gap: 3px
         }
@@ -815,10 +815,6 @@
         .galeria-item {
             overflow: hidden;
             background-color: var(--verde-medio)
-        }
-
-        .galeria-item.tall {
-            grid-row: span 2
         }
 
         .galeria-item img {
