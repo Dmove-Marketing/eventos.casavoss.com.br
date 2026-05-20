@@ -1,62 +1,95 @@
 ---
 // src/components/tracking/UTMCapture.astro
-// Captura UTMs, click IDs e referrer da URL e salva em sessionStorage
-// Dados são enviados junto com cada formulário para atribuição de campanhas
+// Captura UTMs, click IDs e cookies de pixel.
+// Persiste em: cookies (30d) + localStorage (30d) + sessionStorage (sessão)
 ---
 
 <script>
-  (function() {
-    const params = new URLSearchParams(window.location.search);
+  (function () {
+    const STORAGE_KEY    = 'dmove_tracking';
+    const FIRST_VISIT_KEY = 'dmove_first_visit';
+    const TTL_DAYS = 30;
+    const TTL_MS   = TTL_DAYS * 24 * 60 * 60 * 1000;
 
-    // UTM params padrão
-    const utmKeys = [
-      'utm_source', 'utm_medium', 'utm_campaign',
-      'utm_content', 'utm_term'
-    ];
+    function setCookie(name: string, value: string, days: number) {
+      const exp = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie = `${name}=${encodeURIComponent(value)};expires=${exp};path=/;SameSite=Lax`;
+    }
 
-    // Click IDs (Google Ads, Meta, TikTok, Bing, etc.)
-    const clickIdKeys = ['gclid', 'fbclid', 'sck', 'ttclid', 'msclkid'];
+    function getCookie(name: string): string {
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : '';
+    }
 
-    const trackingData: Record<string, string> = {};
+    const params    = new URLSearchParams(window.location.search);
+    const utmKeys   = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    const clickKeys = ['gclid', 'fbclid', 'ttclid', 'msclkid', 'sck', 'gbraid', 'wbraid'];
 
-    // Capturar UTMs
-    utmKeys.forEach(key => {
-      const value = params.get(key);
-      if (value) trackingData[key] = value;
-    });
+    const fresh: Record<string, string> = {};
 
-    // Capturar click IDs
-    clickIdKeys.forEach(key => {
-      const value = params.get(key);
-      if (value) trackingData[key] = value;
-    });
+    // Captura UTMs e click IDs da URL
+    utmKeys.forEach(k => { const v = params.get(k); if (v) fresh[k] = v; });
+    clickKeys.forEach(k => { const v = params.get(k); if (v) fresh[k] = v; });
 
-    // Referrer (só externo)
+    // Persiste cada UTM/click ID em cookie próprio (leitura igual ao Elementor)
+    const hasAttribution = Object.keys(fresh).length > 0;
+    if (hasAttribution) {
+      utmKeys.forEach(k => { if (fresh[k]) setCookie(k, fresh[k], TTL_DAYS); });
+      clickKeys.forEach(k => { if (fresh[k]) setCookie(k, fresh[k], 7); }); // click IDs: 7 dias
+    }
+
+    // Lê cookies de pixel (Facebook Pixel, GA, Google Ads)
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+    const ga  = getCookie('_ga');
+    const gcl = getCookie('_gcl_aw');
+    if (fbp) fresh['fbp'] = fbp;
+    if (fbc) fresh['fbc'] = fbc;
+    if (ga)  fresh['_ga'] = ga;
+    if (gcl) fresh['gcl_aw'] = gcl;
+
     if (document.referrer && !document.referrer.includes(window.location.hostname)) {
-      trackingData['referrer'] = document.referrer;
+      fresh['referrer'] = document.referrer;
     }
 
-    // Landing page
-    trackingData['landing_page'] = window.location.pathname;
-    trackingData['landing_url'] = window.location.href.split('?')[0];
+    fresh['landing_page'] = window.location.pathname;
+    fresh['landing_url']  = window.location.href.split('?')[0];
 
-    // Timestamp da primeira visita na sessão
-    if (!sessionStorage.getItem('dmove_first_visit')) {
-      sessionStorage.setItem('dmove_first_visit', new Date().toISOString());
+    // Primeira visita — persiste em localStorage indefinidamente
+    if (!localStorage.getItem(FIRST_VISIT_KEY)) {
+      localStorage.setItem(FIRST_VISIT_KEY, new Date().toISOString());
     }
 
-    // Salvar em sessionStorage (só se tiver dados novos de UTM/click)
-    const hasNewParams = utmKeys.some(k => trackingData[k]) || clickIdKeys.some(k => trackingData[k]);
-    if (hasNewParams) {
-      sessionStorage.setItem('dmove_tracking', JSON.stringify(trackingData));
+    // localStorage: salva quando há atribuição nova (sobrescreve)
+    if (hasAttribution) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...fresh, _ts: Date.now() }));
     }
 
-    // Push para DataLayer
+    // Merge: localStorage (base) + sessionStorage (sessão) + fresh (atual)
+    let base: Record<string, string> = {};
+    try {
+      const ls = localStorage.getItem(STORAGE_KEY);
+      if (ls) {
+        const p = JSON.parse(ls);
+        if (Date.now() - (p._ts || 0) < TTL_MS) {
+          const { _ts, ...rest } = p;
+          base = rest;
+        }
+      }
+    } catch {}
+    try {
+      const ss = sessionStorage.getItem(STORAGE_KEY);
+      if (ss) base = { ...base, ...JSON.parse(ss) };
+    } catch {}
+
+    const merged = { ...base, ...fresh };
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push({
       event: 'page_meta',
       page_path: window.location.pathname,
-      ...trackingData
+      ...merged,
     });
   })();
 </script>

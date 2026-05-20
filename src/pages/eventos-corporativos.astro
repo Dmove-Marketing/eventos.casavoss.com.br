@@ -2,6 +2,11 @@
 // Componente gerado a partir de: eventos-corporativos.html
 import '../styles/eventos-corporativos.css';
 import LeadForm from '../components/forms/LeadForm.astro';
+import GTMHead from '../components/tracking/GTMHead.astro';
+import GTMBody from '../components/tracking/GTMBody.astro';
+import config from '../../config.json';
+const gtmId = config.tracking?.gtm_id || '';
+const trackingEnabled = config.tracking?.enabled !== false;
 ---
 
 <!DOCTYPE html>
@@ -27,14 +32,11 @@ import LeadForm from '../components/forms/LeadForm.astro';
         rel="stylesheet" />
     <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/flatpickr.min.css" />
 
-    
-    
-
-    
+    {trackingEnabled && gtmId && <GTMHead gtmId={gtmId} />}
 </head>
 
 <body>
-    <noscript></noscript>
+    {trackingEnabled && gtmId && <GTMBody gtmId={gtmId} />}
 
     <nav id="navbar">
         <a href="#" class="nav-logo"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/Casa-Voss-Logo-atualizada.avif" alt="Casa Voss" class="nav-logo-img" /></a>

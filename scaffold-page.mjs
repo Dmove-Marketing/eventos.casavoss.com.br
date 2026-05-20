@@ -99,20 +99,69 @@ files.forEach(filename => {
     // Monta o arquivo Astro final com os imports
     let astroFrontmatter = '---\n';
     astroFrontmatter += `// Componente gerado a partir de: ${filename}\n`;
+    astroFrontmatter += `import config from '../../config.json';\n`;
     if (hasCss) {
       astroFrontmatter += `import '../styles/${baseName}.css';\n`;
     }
     astroFrontmatter += '---\n\n';
 
+    // ---- Integração de Formulário ----
+    if (astroBody.includes('<form')) {
+      // Substitui a tag <form> para usar os dados do config.json
+      astroBody = astroBody.replace(/<form([^>]*)>/gi, (match, attrs) => {
+        let cleanAttrs = attrs
+          .replace(/\s*action=(['"])[^'"]*\1/gi, '')
+          .replace(/\s*method=(['"])[^'"]*\1/gi, '')
+          .replace(/\s*data-form-id=(['"])[^'"]*\1/gi, '')
+          .replace(/\s*data-project=(['"])[^'"]*\1/gi, '')
+          .replace(/\s*data-submit-url=(['"])[^'"]*\1/gi, '')
+          .replace(/\s*data-redirect=(['"])[^'"]*\1/gi, '');
+        
+        return `<form${cleanAttrs} data-form-id="lead-form" data-project={config.project_slug} data-submit-url={config.forms['lead-form'].webhooks[0]} data-redirect={config.forms['lead-form'].redirect_on_success} novalidate>`;
+      });
+
+      // Padroniza as nomenclaturas dos campos (name=...)
+      const nameMap = {
+        'name': 'nome',
+        'whatsapp': 'telefone',
+        'phone': 'telefone',
+        'e-mail': 'email'
+      };
+      for (const [oldName, newName] of Object.entries(nameMap)) {
+        const regex = new RegExp(`name=(['"])${oldName}\\1`, 'gi');
+        astroBody = astroBody.replace(regex, `name="${newName}"`);
+      }
+
+      // Adiciona o honeypot logo após a abertura do form se não existir
+      if (!astroBody.match(/name=(['"])website\1/i)) {
+        const honeypotHtml = `\n    <div style="display:none;" aria-hidden="true"><label for="hp_website">Deixe em branco</label><input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off" /></div>`;
+        astroBody = astroBody.replace(/<form[^>]*>/i, `$&${honeypotHtml}`);
+      }
+      
+      // Adiciona div de erro antes de fechar o form, caso falte
+      if (!astroBody.includes('class="form-error"')) {
+        astroBody = astroBody.replace(/<\/form>/i, `\n    <div class="form-error" style="color: #ef4444; font-size: 0.875rem; margin-top: 10px; display: none;"></div>\n</form>`);
+      }
+    }
+    // ----------------------------------
+
     let finalAstro = astroFrontmatter + astroBody;
 
-    // Se houver JS extraído, injeta o import antes do </body>
+    // Se houver JS extraído ou Formulário, injeta os imports antes do </body>
+    let scriptImports = '';
     if (hasJs) {
-      const jsImportBlock = `\n  <script>\n    import '../scripts/${baseName}.js';\n  </script>\n`;
+      scriptImports += `    import '../scripts/${baseName}.js';\n`;
+    }
+    if (astroBody.includes('<form')) {
+      scriptImports += `    import '../scripts/forms.ts';\n`;
+    }
+
+    if (scriptImports) {
+      const scriptBlock = `\n  <script>\n${scriptImports}  </script>\n`;
       if (finalAstro.includes('</body>')) {
-        finalAstro = finalAstro.replace('</body>', `${jsImportBlock}</body>`);
+        finalAstro = finalAstro.replace('</body>', `${scriptBlock}</body>`);
       } else {
-        finalAstro += jsImportBlock;
+        finalAstro += scriptBlock;
       }
     }
 

@@ -1,161 +1,71 @@
 ---
-// src/components/ui/VideoEmbed.astro
-// Embed de vídeo com lazy loading e poster customizado
-// Suporta YouTube e Vimeo
-// Uso: <VideoEmbed url="https://www.youtube.com/watch?v=..." />
-
 interface Props {
-  url: string;
-  poster?: string;
-  title?: string;
-  aspectRatio?: '16/9' | '4/3' | '1/1';
+  /** ID do vídeo no YouTube */
+  id: string;
+  title: string;
+  /** thumbnail personalizada (opcional); senão usa a do YouTube */
+  thumbnail?: string;
   class?: string;
 }
 
-const {
-  url,
-  poster,
-  title = 'Vídeo',
-  aspectRatio = '16/9',
-  class: className,
-} = Astro.props;
+const { id, title, thumbnail, class: className } = Astro.props;
 
-// Extrair ID do vídeo
-function getVideoData(url: string) {
-  // YouTube
-  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  if (ytMatch) {
-    return {
-      provider: 'youtube',
-      id: ytMatch[1],
-      embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`,
-      posterUrl: poster || `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`,
-    };
-  }
-
-  // Vimeo
-  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
-  if (vimeoMatch) {
-    return {
-      provider: 'vimeo',
-      id: vimeoMatch[1],
-      embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`,
-      posterUrl: poster || '',
-    };
-  }
-
-  return null;
-}
-
-const video = getVideoData(url);
+const thumb = thumbnail ?? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
 ---
 
-{video && (
-  <div
-    class:list={['video-embed', className]}
-    data-embed-url={video.embedUrl}
-    data-video-title={title}
-    style={`aspect-ratio: ${aspectRatio};`}
-  >
-    {video.posterUrl && (
-      <img
-        src={video.posterUrl}
-        alt={title}
-        class="video-poster"
-        loading="lazy"
-      />
-    )}
-    <button class="video-play-btn" aria-label={`Reproduzir: ${title}`} data-cta="video-play">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.6)" />
-        <path d="M19 15l14 9-14 9V15z" fill="white" />
-      </svg>
-    </button>
-  </div>
-)}
+<div
+  class:list={['video-embed', className]}
+  data-embed-url={embedUrl}
+  style={`background-image: url('${thumb}')`}
+  role="button"
+  tabindex="0"
+  aria-label={`Reproduzir: ${title}`}
+>
+  <button type="button" class="video-embed__play" aria-label="Play">
+    <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
+      <path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.8.3 34 .3 34 .3S12.2.3 7.5 1.7a8.5 8.5 0 0 0-6 6C0 11.4 0 24 0 24s0 12.6 1.5 16.3a8.5 8.5 0 0 0 6 6C12.2 47.7 34 47.7 34 47.7s21.8 0 26.5-1.4a8.5 8.5 0 0 0 6-6C68 36.6 68 24 68 24s0-12.6-1.5-16.3z" fill="red"/>
+      <path d="M45 24 27 14v20z" fill="#fff"/>
+    </svg>
+  </button>
+</div>
 
 <script>
-  function initVideos() {
-    const videos = document.querySelectorAll('.video-embed');
-    videos.forEach(containerEl => {
-      const container = containerEl as HTMLElement;
-      const playBtn = container.querySelector('.video-play-btn');
-
-      playBtn?.addEventListener('click', () => {
-        const embedUrl = container.dataset.embedUrl;
-        const videoTitle = container.dataset.videoTitle || 'Vídeo';
-
-        if (embedUrl) {
-          container.innerHTML = `
-            <iframe
-              src="${embedUrl}"
-              title="${videoTitle}"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              style="width:100%;height:100%;position:absolute;top:0;left:0;"
-            ></iframe>
-          `;
-
-          (window as any).dataLayer?.push({
-            event: 'video_play',
-            video_title: videoTitle,
-          });
-        }
-      });
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initVideos);
-  } else {
-    initVideos();
-  }
+  document.querySelectorAll<HTMLElement>('.video-embed').forEach((el) => {
+    const activate = () => {
+      const url = el.dataset.embedUrl!;
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+      el.innerHTML = '';
+      el.appendChild(iframe);
+    };
+    el.addEventListener('click', activate);
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') activate(); });
+  });
 </script>
 
 <style>
   .video-embed {
     position: relative;
-    width: 100%;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--bg-card);
+    padding-bottom: 56.25%; /* 16:9 */
+    background: #000 center/cover no-repeat;
     cursor: pointer;
+    overflow: hidden;
   }
-
-  .video-poster {
+  .video-embed__play {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--transition-slow);
-  }
-
-  .video-embed:hover .video-poster {
-    transform: scale(1.03);
-  }
-
-  .video-play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    transition: all var(--transition-normal);
-    padding: 0;
+    margin: auto;
+    width: 68px;
+    height: 48px;
     background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s;
   }
-
-  .video-play-btn:hover {
-    transform: translate(-50%, -50%) scale(1.15);
-  }
-
-  .video-play-btn svg circle {
-    transition: fill var(--transition-fast);
-  }
-
-  .video-embed:hover .video-play-btn svg circle {
-    fill: rgba(99, 102, 241, 0.8);
-  }
+  .video-embed:hover .video-embed__play { transform: scale(1.1); }
 </style>

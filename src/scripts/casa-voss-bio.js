@@ -1,39 +1,8 @@
 /* Scripts extraídos automaticamente de Casa Voss - Bio.html */
-
-var GTM_ID = 'GTM-XXXXXXX';
-
-(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', GTM_ID);
+/* GTM e UTM capture gerenciados por GTMHead.astro e UTMCapture.astro */
 
 var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
         var WPP_NUMBER = '5511912176072';
-        window.dataLayer = window.dataLayer || [];
-
-        (function () {
-            var n = document.createElement('noscript'), i = document.createElement('iframe');
-            i.src = 'https://www.googletagmanager.com/ns.html?id=' + GTM_ID;
-            i.height = '0';
-            i.width = '0';
-            i.style.cssText = 'display:none;visibility:hidden';
-            n.appendChild(i);
-            document.body.insertBefore(n, document.body.firstChild)
-        })();
-
-        function getUTMs() {
-            var p = new URLSearchParams(window.location.search);
-            return {
-                utm_source: p.get('utm_source') || '',
-                utm_medium: p.get('utm_medium') || '',
-                utm_campaign: p.get('utm_campaign') || '',
-                utm_content: p.get('utm_content') || '',
-                utm_term: p.get('utm_term') || ''
-            }
-        }
-        var utms = getUTMs();
-        if (utms.utm_source) sessionStorage.setItem('casavoss_utms', JSON.stringify(utms));
 
         var fpLocale = {
             weekdays: {

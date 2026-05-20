@@ -1,5 +1,5 @@
 {
-  "name": "casa-voss",
+  "name": "cliente-exemplo",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "scaffold": "node scaffold-page.mjs"
+    "scaffold": "node scaffold-page.mjs",
+    "deploy": "npm run build && node deploy.mjs"
   },
   "dependencies": {
     "astro": "^6.1.9",
