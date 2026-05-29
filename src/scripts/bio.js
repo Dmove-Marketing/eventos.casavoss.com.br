@@ -2,7 +2,7 @@
 /* GTM e UTM capture gerenciados por GTMHead.astro e UTMCapture.astro */
 
 var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
-        var WPP_NUMBER = '5511992214434';
+        var WPP_NUMBER = '5511912176072';
 
         var fpLocale = {
             weekdays: {
