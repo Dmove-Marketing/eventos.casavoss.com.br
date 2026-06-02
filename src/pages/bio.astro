@@ -1,6 +1,7 @@
 ---
 // Componente gerado a partir de: bio.html
 import '../styles/bio.css';
+import Img from '../components/ui/Img.astro';
 import LeadForm from '../components/forms/LeadForm.astro';
 import GTMHead from '../components/tracking/GTMHead.astro';
 import GTMBody from '../components/tracking/GTMBody.astro';
@@ -139,10 +140,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
         <p class="bio-footer-copy">© 2026 Casa Voss. Todos os direitos reservados.</p>
         <div class="bio-footer-dev">
             <span class="bio-footer-dev-text">Desenvolvido por:</span>
-            <a href="https://dmove.com.br/" target="_blank" rel="noopener noreferrer" class="bio-footer-dev-link"><img
-                    class="bio-footer-dev-img"
-                    src="https://dmove.com.br/wp-content/webp-express/webp-images/uploads/2024/01/Logotipo.png.webp"
-                    alt="DMove" onerror="this.onerror=null;this.style.display='none'" /></a>
+            <a href="https://dmove.com.br/" target="_blank" rel="noopener noreferrer" class="bio-footer-dev-link"><Img src="logo-dmove.webp" alt="DMove" class="bio-footer-dev-img" width={120} /></a>
         </div>
     </footer>
 

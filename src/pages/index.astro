@@ -1,6 +1,7 @@
 ---
 // Componente gerado a partir de: eventos-corporativos.html
 import '../styles/index.css';
+import Img from '../components/ui/Img.astro';
 import LeadForm from '../components/forms/LeadForm.astro';
 import StaticMap from '../components/ui/StaticMap.astro';
 import GTMHead from '../components/tracking/GTMHead.astro';
@@ -39,7 +40,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
     {trackingEnabled && gtmId && <GTMBody gtmId={gtmId} />}
 
     <nav id="navbar">
-        <a href="#" class="nav-logo"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/Casa-Voss-Logo-atualizada.avif" alt="Casa Voss" class="nav-logo-img" /></a>
+        <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={180} class="nav-logo-img" /></a>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#espacos">Espaço</a></li>
@@ -65,7 +66,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
 
     <section class="hero">
         <video class="hero-bg" autoplay muted loop playsinline>
-            <source src="https://casavoss.com.br/wp-content/uploads/2026/05/video-hero.atualizada.mp4" type="video/mp4">
+            <source src="/video-hero.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -103,25 +104,19 @@ const trackingEnabled = config.tracking?.enabled !== false;
         </div>
         <div class="espacos-grid">
             <div class="espaco-card">
-                <div class="espaco-card-img"><img
-                        src="https://casavoss.com.br/wp-content/uploads/2026/05/espaco-ambar.avif"
-                        alt="Espaço Âmbar Casa Voss" loading="lazy" /></div>
+                <div class="espaco-card-img"><Img src="recepcao.jpg" alt="Espaco Ambar Casa Voss" width={800} /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Âmbar</span><span class="espaco-cap">Um auditório contemporâneo de 170m² para até 96 convidados, ideal para apresentações, treinamentos e lançamentos, com formato plenária ou mesas redondas, combinando tecnologia, conforto e estética para potencializar a experiência.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><img
-                        src="https://casavoss.com.br/wp-content/uploads/2026/04/ChatGPT-Image-7-de-abr.-de-2026-22_10_20_resultado.avif"
-                        alt="Espaço Sálvia Casa Voss" loading="lazy" /></div>
+                <div class="espaco-card-img"><Img src="espaco-salvia.png" alt="Espaco Salvia Casa Voss" width={800} /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Sálvia</span><span class="espaco-cap">Um ambiente intimista de 77m² para até 36 convidados, ideal para workshops, mentorias e reuniões estratégicas, pensado para encontros que pedem mais conexão.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><img
-                        src="https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_08-Gourmet_resultado.avif"
-                        alt="Espaço Gourmet Casa Voss" loading="lazy" /></div>
+                <div class="espaco-card-img"><Img src="gourmet.jpg" alt="Espaco Gourmet Casa Voss" width={800} /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Gourmet</span><span class="espaco-cap">Um
                         espaço onde o networking se mistura à gastronomia, <b>ideal para coffee breaks, almoços e
                             ativações com chefs convidados.</b></span><button class="espaco-card-btn"
@@ -129,17 +124,13 @@ const trackingEnabled = config.tracking?.enabled !== false;
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><img
-                        src="https://casavoss.com.br/wp-content/uploads/2026/05/Garden-Lounge_resultado.avif"
-                        alt="Garden Lounge Casa Voss" loading="lazy" /></div>
+                <div class="espaco-card-img"><Img src="garden-lounge.jpeg" alt="Garden Lounge Casa Voss" width={800} /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Garden Lounge</span><span class="espaco-cap">Um espaço ao ar livre de 85m² para até 36 convidados, que combina natureza e acolhimento, ideal para workshops, treinamentos e reuniões estratégicas mais intimistas.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><img
-                        src="https://casavoss.com.br/wp-content/uploads/2026/05/rooftop.avif"
-                        alt="Rooftop Casa Voss" loading="lazy" /></div>
+                <div class="espaco-card-img"><Img src="rooftop.jpeg" alt="Rooftop Casa Voss" width={800} /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Rooftop</span><span class="espaco-cap">Com 210m²
                         de terraço e 42m² de área coberta, um espaço amplo, versátil e cercado de verde, ideal para
                         almoços, coquetéis e celebrações ao ar livre.</span><button class="espaco-card-btn"
@@ -156,19 +147,19 @@ const trackingEnabled = config.tracking?.enabled !== false;
         </div>
         <div class="exp-tipos-grid">
             <div class="exp-tipo-card">
-                <div class="exp-tipo-icon"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/voss-experience-sf.avif" alt="Voss Experience" /></div>
+                <div class="exp-tipo-icon"><Img src="voss-experience-sf.png" alt="Voss Experience" width={120} /></div>
                 <p class="exp-tipo-desc">Soluções completas para eventos corporativos, treinamentos, lançamentos e produções audiovisuais. Ambientes flexíveis, infraestrutura técnica e cenários planejados para gerar impacto, conexão e performance.</p>
             </div>
             <div class="exp-tipo-card">
-                <div class="exp-tipo-icon"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/voss-gourmet-sf.avif" alt="Voss Gourmet" /></div>
+                <div class="exp-tipo-icon"><Img src="voss-gourmet-sf.png" alt="Voss Gourmet" width={120} /></div>
                 <p class="exp-tipo-desc">Alta gastronomia para almoços e jantares exclusivos, com menus autorais e serviço impecável. Uma experiência onde o receber bem e a culinária se tornam protagonistas.</p>
             </div>
             <div class="exp-tipo-card">
-                <div class="exp-tipo-icon"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/voss-chef-sf.avif" alt="Voss Chef" /></div>
+                <div class="exp-tipo-icon"><Img src="voss-chef-sf.png" alt="Voss Chef" width={120} /></div>
                 <p class="exp-tipo-desc">Experiências de team building gastronômico que unem colaboração e prática. Estrutura completa com 4 bancadas equipadas para dinâmicas culinárias em grupo.</p>
             </div>
             <div class="exp-tipo-card">
-                <div class="exp-tipo-icon"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/voss-em-casa-sf.avif" alt="Voss em Casa" /></div>
+                <div class="exp-tipo-icon"><Img src="voss-em-casa-sf.png" alt="Voss em Casa" width={120} /></div>
                 <p class="exp-tipo-desc">A assinatura da nossa cozinha no seu dia a dia. Rotisserie premium que combina praticidade, qualidade e sabor afetivo para o conforto do lar.</p>
             </div>
         </div>
@@ -274,24 +265,12 @@ const trackingEnabled = config.tracking?.enabled !== false;
         <h2 class="section-title">Ambientes, experiências e detalhes que traduzem a <br><em>essência da Casa VOSS.</em></h2>
     </div>
     <div class="galeria">
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_21-Salas_resultado.avif"
-                alt="" loading="lazy" /></div>
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/05/galeria02.avif"
-                alt="" loading="lazy" /></div>
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_10-Pocket-Auditorio_resultado.avif"
-                alt="" loading="lazy" /></div>
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_20-Estar_resultado.avif"
-                alt="" loading="lazy" /></div>
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/04/ChatGPT-Image-7-de-abr.-de-2026-22_07_06_resultado.avif"
-                alt="" loading="lazy" /></div>
-        <div class="galeria-item"><img
-                src="https://casavoss.com.br/wp-content/uploads/2026/05/galeria01.avif"
-                alt="" loading="lazy" /></div>
+        <div class="galeria-item"><Img src="salas.jpg" alt="" width={800} /></div>
+        <div class="galeria-item"><Img src="galeria02.jpeg" alt="" width={800} /></div>
+        <div class="galeria-item"><Img src="pocket-auditorio.jpg" alt="" width={800} /></div>
+        <div class="galeria-item"><Img src="estar.jpg" alt="" width={800} /></div>
+        <div class="galeria-item"><Img src="galeria03.png" alt="" width={800} /></div>
+        <div class="galeria-item"><Img src="galeria01.jpeg" alt="" width={800} /></div>
     </div>
 
     <section class="localizacao" id="localizacao">
@@ -407,7 +386,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
 
     <footer>
         <div class="footer-brand">
-            <a href="#" class="nav-logo"><img src="https://casavoss.com.br/wp-content/uploads/2026/05/Casa-Voss-Logo-atualizada.avif" alt="Casa Voss" class="nav-logo-img" /></a>
+            <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={180} class="nav-logo-img" /></a>
             <p class="footer-desc">Espaço de eventos corporativos em São Paulo. Sofisticação, acolhimento e experiências únicas para a sua marca.</p>
             <div class="footer-socials" style="margin-top: 20px;">
                 <a href="https://www.instagram.com/casa_voss" target="_blank" aria-label="Instagram Casa Voss" style="color: #fff; display: inline-block;">
@@ -437,9 +416,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
             <div class="footer-dev">
                 <span class="footer-dev-text">Desenvolvido por:</span>
                 <a href="https://dmove.com.br/" target="_blank" rel="noopener noreferrer"
-                    class="footer-dev-img-link"><img class="footer-dev-img"
-                        src="https://dmove.com.br/wp-content/webp-express/webp-images/uploads/2024/01/Logotipo.png.webp"
-                        alt="DMove" onerror="this.onerror=null;this.style.display='none'" /></a>
+                    class="footer-dev-img-link"><Img src="logo-dmove.webp" alt="DMove" class="footer-dev-img" width={120} /></a>
             </div>
         </div>
     </footer>

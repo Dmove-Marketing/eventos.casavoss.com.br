@@ -362,7 +362,7 @@
         }
 
         .sobre-img {
-            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/05/WhatsApp-Image-2026-04-30-at-11.40.19-AM.avif');
+            background-image: url('/images/hero-bg.jpeg');
             background-size: cover;
             background-position: center;
             background-color: var(--verde-medio);
@@ -630,7 +630,7 @@
         }
 
         .gastro-img {
-            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_08-Gourmet_resultado.avif');
+            background-image: url('/images/gourmet.jpg');
             background-size: cover;
             background-position: center;
             background-color: var(--verde-medio);

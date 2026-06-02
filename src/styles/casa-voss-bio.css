@@ -58,7 +58,7 @@
         .bio-bg {
             position: absolute;
             inset: 0;
-            background-image: url('https://casavoss.com.br/wp-content/uploads/2026/04/Copia-de-064VIZ_IMG_01-Recepcao.avif');
+            background-image: url('/images/recepcao.jpg');
             background-size: cover;
             background-position: center;
             background-color: var(--verde-medio);
