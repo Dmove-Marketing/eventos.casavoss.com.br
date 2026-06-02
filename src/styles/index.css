@@ -2706,6 +2706,10 @@
         font-size: clamp(18px, 5vw, 22px);
     }
 
+    .experiencia-voss-header .section-title {
+        font-size: clamp(16px, 4.8vw, 19px);
+    }
+
     .manifesto {
         padding: 72px 28px;
     }
