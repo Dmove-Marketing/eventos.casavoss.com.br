@@ -2310,7 +2310,7 @@
             }
 
             .contato-info .section-title {
-                font-size: clamp(20px, 6vw, 26px)
+                font-size: clamp(16px, 4.5vw, 22px)
             }
 
             .contato-form-wrap {
