@@ -691,7 +691,7 @@
 
         .diferenciais-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 2px
         }
 
@@ -2228,6 +2228,10 @@
 
             .experiencia-voss {
                 padding: 72px 24px
+            }
+
+            .experiencia-voss-header .section-title {
+                font-size: clamp(20px, 6vw, 26px)
             }
 
             .exp-tipos-grid {
