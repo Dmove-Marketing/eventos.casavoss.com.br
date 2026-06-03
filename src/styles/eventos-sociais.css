@@ -2291,6 +2291,10 @@
                 padding: 56px 32px
             }
 
+            .contato-info .section-title {
+                font-size: clamp(20px, 6vw, 26px)
+            }
+
             .contato-form-wrap {
                 padding: 0 16px 16px
             }
