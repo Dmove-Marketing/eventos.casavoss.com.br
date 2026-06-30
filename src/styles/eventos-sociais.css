@@ -629,9 +629,9 @@
         }
 
         .gastro-img {
-            background-image: url('/images/gourmet.jpg');
+            background-image: url('https://media.dmove.com.br/clients/casavoss/photos/CasaVoss_alegustavo211.webp');
             background-size: cover;
-            background-position: center;
+            background-position: center 70%;
             background-color: var(--verde-medio);
             min-height: 480px
         }
@@ -696,53 +696,39 @@
         }
 
         .dif-card {
-            background: rgba(37, 38, 31, .02);
-            border: 1px solid rgba(37, 38, 31, .07);
-            padding: 44px 36px;
-            text-align: center;
-            transition: background .4s, border-color .4s
-        }
-
-        .dif-card:hover {
-            background: rgba(37, 38, 31, .05);
-            border-color: rgba(139, 106, 62, .3)
-        }
-
-        .dif-card-icon {
-            width: 58px;
-            height: 58px;
-            border: 1px solid rgba(139, 106, 62, .3);
-            border-radius: 50%;
+            position: relative;
+            background-image: var(--dif-bg);
+            background-size: cover;
+            background-position: center;
+            min-height: 320px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            transition: background .3s, border-color .3s
+            align-items: flex-end;
+            overflow: hidden
         }
 
-        .dif-card:hover .dif-card-icon {
-            background: rgba(139, 106, 62, .08);
-            border-color: var(--cobre)
+        .dif-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(20, 22, 16, .75) 0%, transparent 55%);
+            transition: opacity .4s
         }
 
-        .dif-card-icon svg {
-            width: 26px;
-            height: 26px;
-            stroke: var(--cobre);
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round
+        .dif-card:hover::after {
+            opacity: .8
         }
 
         .dif-card-title {
+            position: relative;
+            z-index: 1;
             font-family: 'Apparat', 'Inter', sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 400;
-            color: var(--verde);
+            color: #fff;
             letter-spacing: .5px;
             display: block;
-            line-height: 1.4
+            line-height: 1.4;
+            padding: 20px 24px
         }
 
         .dif-last-row {
