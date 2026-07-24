@@ -120,9 +120,7 @@ export function initForms() {
       }
     });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
+    async function handleSubmit() {
       // Honeypot
       const hp = form.querySelector<HTMLInputElement>('[name="website"]');
       if (hp?.value) return;
@@ -148,7 +146,7 @@ export function initForms() {
       if (!valid) return;
 
       // Loading state
-      const submitBtn  = form.querySelector<HTMLButtonElement>('.form-submit, [type="submit"]');
+      const submitBtn  = form.querySelector<HTMLButtonElement>('.form-submit');
       const btnText    = submitBtn?.querySelector<HTMLElement>('.btn-text');
       const btnLoading = submitBtn?.querySelector<HTMLElement>('.btn-loading');
       const msgEl = gridId
@@ -241,6 +239,19 @@ export function initForms() {
             submitBtn.innerHTML = submitBtn.dataset.originalText;
           }
         }
+      }
+    }
+
+    form.querySelector<HTMLButtonElement>('.form-submit')?.addEventListener('click', handleSubmit);
+
+    form.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (
+        e.key === 'Enter' &&
+        !(e.target instanceof HTMLTextAreaElement) &&
+        !(e.target instanceof HTMLButtonElement)
+      ) {
+        e.preventDefault();
+        handleSubmit();
       }
     });
   });

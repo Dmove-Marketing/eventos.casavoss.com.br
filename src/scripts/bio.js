@@ -85,61 +85,70 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
 
         // O submit é tratado pelo componente LeadForm quando data-form-id está presente
         var _legacyForm = document.getElementById('form_bio');
-        if (_legacyForm && !_legacyForm.dataset.formId) _legacyForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (document.getElementById('Website').value !== '') return;
-            if (!bioValidate()) return;
+        if (_legacyForm && !_legacyForm.dataset.formId) {
+            function _legacyBioSubmit() {
+                if (document.getElementById('Website').value !== '') return;
+                if (!bioValidate()) return;
 
-            var btn = document.getElementById('bioSubmitBtn'),
-                msg = document.getElementById('bioFormMsg');
-            btn.disabled = true;
-            btn.textContent = 'ENVIANDO...';
-            msg.style.display = 'none';
-            msg.className = 'bio-form-msg';
+                var btn = document.getElementById('bioSubmitBtn'),
+                    msg = document.getElementById('bioFormMsg');
+                btn.disabled = true;
+                btn.textContent = 'ENVIANDO...';
+                msg.style.display = 'none';
+                msg.className = 'bio-form-msg';
 
-            var sU = JSON.parse(sessionStorage.getItem('casavoss_utms') || '{}'),
-                r = document.getElementById('Telefone').value.trim();
-            if (r.slice(0, 3) === '+55') r = r.slice(3).trim();
+                var sU = JSON.parse(sessionStorage.getItem('casavoss_utms') || '{}'),
+                    r = document.getElementById('Telefone').value.trim();
+                if (r.slice(0, 3) === '+55') r = r.slice(3).trim();
 
-            var payload = {
-                post_id: '168',
-                form_id: '345d78ac',
-                referer_title: 'BIO',
-                queried_id: '168',
-                form_fields: {
-                    "Nome": document.getElementById('Nome').value.trim(),
-                    "WhatsApp": r.replace(/\D/g, ''),
-                    "Email": document.getElementById('Email').value.trim().toLowerCase(),
-                    "Tipo de evento": document.getElementById('Tipo').value,
-                    "Data do evento": document.getElementById('Data').value.trim(),
-                    "Convidados": document.getElementById('Convidados').value.trim(),
-                    "Mensagem": document.getElementById('Mensagem').value.trim(),
-                    "Fonte": document.getElementById('Fonte').value
-                }
-            };
+                var payload = {
+                    post_id: '168',
+                    form_id: '345d78ac',
+                    referer_title: 'BIO',
+                    queried_id: '168',
+                    form_fields: {
+                        "Nome": document.getElementById('Nome').value.trim(),
+                        "WhatsApp": r.replace(/\D/g, ''),
+                        "Email": document.getElementById('Email').value.trim().toLowerCase(),
+                        "Tipo de evento": document.getElementById('Tipo').value,
+                        "Data do evento": document.getElementById('Data').value.trim(),
+                        "Convidados": document.getElementById('Convidados').value.trim(),
+                        "Mensagem": document.getElementById('Mensagem').value.trim(),
+                        "Fonte": document.getElementById('Fonte').value
+                    }
+                };
 
-            Object.keys(sU).forEach(function (k) {
-                if (sU[k]) payload.form_fields[k] = sU[k]
-            });
-
-            postRetry(N8N_WEBHOOK_URL, payload).then(function () {
-                window.dataLayer.push({
-                    event: 'bio_form_envio',
-                    bio_form_name: 'form_bio',
-                    bio_form_tipo: payload.form_fields["Tipo de evento"],
-                    bio_form_convidados: Number(payload.form_fields["Convidados"]),
-                    bio_form_data: payload.form_fields["Data do evento"] || ''
+                Object.keys(sU).forEach(function (k) {
+                    if (sU[k]) payload.form_fields[k] = sU[k]
                 });
-                document.getElementById('bioFormGrid').style.display = 'none';
-                document.getElementById('bioSuccess').classList.add('active')
-            }).catch(function () {
-                btn.disabled = false;
-                btn.textContent = 'ENVIAR SOLICITAÇÃO';
-                msg.innerHTML = 'Erro ao enviar. Tente novamente ou entre em contato pelo <a href="mailto:contato@casavoss.com.br">contato@casavoss.com.br</a>.';
-                msg.className = 'bio-form-msg error';
-                msg.style.display = 'block'
-            })
-        });
+
+                postRetry(N8N_WEBHOOK_URL, payload).then(function () {
+                    window.dataLayer.push({
+                        event: 'bio_form_envio',
+                        bio_form_name: 'form_bio',
+                        bio_form_tipo: payload.form_fields["Tipo de evento"],
+                        bio_form_convidados: Number(payload.form_fields["Convidados"]),
+                        bio_form_data: payload.form_fields["Data do evento"] || ''
+                    });
+                    document.getElementById('bioFormGrid').style.display = 'none';
+                    document.getElementById('bioSuccess').classList.add('active')
+                }).catch(function () {
+                    btn.disabled = false;
+                    btn.textContent = 'ENVIAR SOLICITAÇÃO';
+                    msg.innerHTML = 'Erro ao enviar. Tente novamente ou entre em contato pelo <a href="mailto:contato@casavoss.com.br">contato@casavoss.com.br</a>.';
+                    msg.className = 'bio-form-msg error';
+                    msg.style.display = 'block'
+                })
+            }
+            var _legacyBioBtn = document.getElementById('bioSubmitBtn');
+            if (_legacyBioBtn) _legacyBioBtn.addEventListener('click', _legacyBioSubmit);
+            _legacyForm.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement)) {
+                    e.preventDefault();
+                    _legacyBioSubmit();
+                }
+            });
+        }
 
         document.querySelectorAll('.bio-input,.bio-select,.bio-textarea').forEach(function (el) {
             function cl() {
@@ -350,6 +359,26 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 wpp_popup_email: dados.email,
                 wpp_popup_whatsapp: dados.whatsapp.replace(/\D/g, '')
             });
+            var sU = JSON.parse(sessionStorage.getItem('dmove_tracking') || sessionStorage.getItem('casavoss_utms') || '{}');
+            var firstVisit = localStorage.getItem('dmove_first_visit') || sessionStorage.getItem('dmove_first_visit') || '';
+            var wppPayload = {
+                'Nome': dados.nome,
+                'WhatsApp': dados.whatsapp.replace(/\D/g, ''),
+                'E-mail': dados.email.toLowerCase(),
+                'Tipo de evento': dados.tipo,
+                'Data do evento': dados.data,
+                'Convidados': dados.convidados,
+                'Fonte': 'Site Casa Voss / Popup WhatsApp',
+                'form_id': 'wpp_popup',
+                'form_name': 'casavoss',
+                'Desenvolvido por': 'Dmove Sites',
+                'URL da página': window.location.href,
+                'Agente de usuário': navigator.userAgent,
+                'first_visit': firstVisit,
+                'submitted_at': new Date().toISOString()
+            };
+            Object.keys(sU).forEach(function (k) { if (sU[k]) wppPayload[k] = sU[k]; });
+            postRetry(N8N_WEBHOOK_URL, wppPayload);
             closePopup();
             window.open('https://wa.me/' + WPP_NUMBER + '?text=' + txt, '_blank', 'noopener,noreferrer')
         }

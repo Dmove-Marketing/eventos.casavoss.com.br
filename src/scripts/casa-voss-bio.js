@@ -83,8 +83,7 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
             })
         }
 
-        document.getElementById('form_bio').addEventListener('submit', function (e) {
-            e.preventDefault();
+        function _handleBioSubmit() {
             if (document.getElementById('Website').value !== '') return;
             if (!bioValidate()) return;
 
@@ -137,6 +136,15 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 msg.className = 'bio-form-msg error';
                 msg.style.display = 'block'
             })
+        }
+        var _bioBtnEl = document.getElementById('bioSubmitBtn');
+        if (_bioBtnEl) _bioBtnEl.addEventListener('click', _handleBioSubmit);
+        var _bioFormEl = document.getElementById('form_bio');
+        if (_bioFormEl) _bioFormEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement)) {
+                e.preventDefault();
+                _handleBioSubmit();
+            }
         });
 
         document.querySelectorAll('.bio-input,.bio-select,.bio-textarea').forEach(function (el) {
@@ -348,6 +356,26 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 wpp_popup_email: dados.email,
                 wpp_popup_whatsapp: dados.whatsapp.replace(/\D/g, '')
             });
+            var sU = JSON.parse(sessionStorage.getItem('dmove_tracking') || sessionStorage.getItem('casavoss_utms') || '{}');
+            var firstVisit = localStorage.getItem('dmove_first_visit') || sessionStorage.getItem('dmove_first_visit') || '';
+            var wppPayload = {
+                'Nome': dados.nome,
+                'WhatsApp': dados.whatsapp.replace(/\D/g, ''),
+                'E-mail': dados.email.toLowerCase(),
+                'Tipo de evento': dados.tipo,
+                'Data do evento': dados.data,
+                'Convidados': dados.convidados,
+                'Fonte': 'Site Casa Voss / Popup WhatsApp',
+                'form_id': 'wpp_popup',
+                'form_name': 'casavoss',
+                'Desenvolvido por': 'Dmove Sites',
+                'URL da página': window.location.href,
+                'Agente de usuário': navigator.userAgent,
+                'first_visit': firstVisit,
+                'submitted_at': new Date().toISOString()
+            };
+            Object.keys(sU).forEach(function (k) { if (sU[k]) wppPayload[k] = sU[k]; });
+            postRetry(N8N_WEBHOOK_URL, wppPayload);
             closePopup();
             window.open('https://wa.me/' + WPP_NUMBER + '?text=' + txt, '_blank', 'noopener,noreferrer')
         }

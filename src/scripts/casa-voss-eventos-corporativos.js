@@ -59,8 +59,7 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
         }
 
         /* ═══ SUBMIT — payload com Empresa ═══ */
-        document.getElementById('form_corporativo').addEventListener('submit', function (e) {
-            e.preventDefault();
+        function _handleCorpSubmit() {
             if (document.getElementById('Website').value !== '') return;
             if (!corporativoValidate()) return;
             var btn = document.getElementById('corporativoSubmitBtn'), msg = document.getElementById('corporativoFormMsg');
@@ -85,6 +84,15 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 window.dataLayer.push({ event: 'corporativo_form_envio', corporativo_form_name: 'form_corporativo', corporativo_form_tipo: payload.form_fields["Tipo de evento"], corporativo_form_convidados: Number(payload.form_fields["Convidados"]), corporativo_form_data: payload.form_fields["Data do evento"] || '', corporativo_form_empresa: payload.form_fields["Empresa"] });
                 document.getElementById('corporativoFormGrid').style.display = 'none'; document.getElementById('corporativoSuccess').classList.add('active');
             }).catch(function () { btn.disabled = false; btn.textContent = 'SOLICITAR ORÇAMENTO PERSONALIZADO'; msg.innerHTML = 'Erro ao enviar. Tente novamente ou entre em contato pelo <a href="mailto:contato@casavoss.com.br">contato@casavoss.com.br</a>.'; msg.className = 'corporativo-form-msg error'; msg.style.display = 'block'; });
+        }
+        var _corpBtnEl = document.getElementById('corporativoSubmitBtn');
+        if (_corpBtnEl) _corpBtnEl.addEventListener('click', _handleCorpSubmit);
+        var _corpFormEl = document.getElementById('form_corporativo');
+        if (_corpFormEl) _corpFormEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof HTMLButtonElement)) {
+                e.preventDefault();
+                _handleCorpSubmit();
+            }
         });
 
         document.querySelectorAll('.corporativo-input,.corporativo-select,.corporativo-textarea').forEach(function (el) {
@@ -156,6 +164,27 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
             txt += '*E-mail:* ' + encodeURIComponent(dados.email) + '%0A';
             txt += '*WhatsApp:* ' + encodeURIComponent(dados.whatsapp);
             window.dataLayer.push({ event: 'wpp_popup_iniciar', wpp_popup_tipo: dados.tipo, wpp_popup_data: dados.data, wpp_popup_convidados: dados.convidados, wpp_popup_nome: dados.nome, wpp_popup_empresa: dados.empresa, wpp_popup_email: dados.email, wpp_popup_whatsapp: dados.whatsapp.replace(/\D/g, '') });
+            var sU = JSON.parse(sessionStorage.getItem('dmove_tracking') || sessionStorage.getItem('casavoss_utms') || '{}');
+            var firstVisit = localStorage.getItem('dmove_first_visit') || sessionStorage.getItem('dmove_first_visit') || '';
+            var wppPayload = {
+                'Nome': dados.nome,
+                'Empresa': dados.empresa,
+                'WhatsApp': dados.whatsapp.replace(/\D/g, ''),
+                'E-mail': dados.email.toLowerCase(),
+                'Tipo de evento': dados.tipo,
+                'Data do evento': dados.data,
+                'Convidados': dados.convidados,
+                'Fonte': 'Site Casa Voss / Popup WhatsApp',
+                'form_id': 'wpp_popup',
+                'form_name': 'casavoss',
+                'Desenvolvido por': 'Dmove Sites',
+                'URL da página': window.location.href,
+                'Agente de usuário': navigator.userAgent,
+                'first_visit': firstVisit,
+                'submitted_at': new Date().toISOString()
+            };
+            Object.keys(sU).forEach(function (k) { if (sU[k]) wppPayload[k] = sU[k]; });
+            postRetry(N8N_WEBHOOK_URL, wppPayload);
             closePopup();
             window.open('https://wa.me/' + WPP_NUMBER + '?text=' + txt, '_blank', 'noopener,noreferrer');
         }
