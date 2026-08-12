@@ -322,11 +322,11 @@
         }
 
         .stat-item {
-            padding: 36px 60px;
+            padding: 36px 40px;
             text-align: center;
             border-right: 1px solid rgba(240, 235, 224, .12);
             flex: 1;
-            max-width: 240px
+            max-width: 320px
         }
 
         .stat-item:last-child {
