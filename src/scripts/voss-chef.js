@@ -102,7 +102,7 @@ var lightboxImg = document.getElementById('lightboxImg');
 var lightboxClose = document.getElementById('lightboxClose');
 
 if (lightbox && lightboxImg) {
-    document.querySelectorAll('.galeria-mosaic-item img, .galeria-slide img').forEach(function (img) {
+    document.querySelectorAll('.galeria-grid-item img, .galeria-slide img').forEach(function (img) {
         img.addEventListener('click', function () {
             lightboxImg.src = this.src;
             lightbox.classList.add('active');
