@@ -30,6 +30,14 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
         }
         document.getElementById('Telefone').addEventListener('input', phoneMask);
 
+        function horaMask(e) {
+            var v = e.target.value.replace(/\D/g, '').substring(0, 4);
+            if (v.length > 2) v = v.substring(0, 2) + ':' + v.substring(2);
+            e.target.value = v;
+        }
+        document.getElementById('HorarioInicio').addEventListener('input', horaMask);
+        document.getElementById('HorarioTermino').addEventListener('input', horaMask);
+
         /* Validação sem campo Empresa */
         function sociaisValidate() {
             var ok = true;
@@ -105,7 +113,7 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
         /* POPUP WHATSAPP — eventos sociais (sem campo Empresa) */
         var TIPOS = ['Aniversário', 'Aniversário debutante', 'Bodas', 'Casamento', 'Chá de bebê', 'Chá de panela', 'Confraternização social', 'Formatura', 'Happy Hour', 'Jantar especial', 'Shows e Festivais', 'Outros'];
         var chat = document.getElementById('wppChat'), bar = document.getElementById('wppBar'), overlay = document.getElementById('wppOverlay'), wrap = document.getElementById('wppWrap'), floatBtn = document.getElementById('wppFloatBtn'), isOpen = false, fpInst = null;
-        var dados = { tipo: '', data: '', convidados: '', nome: '', email: '', whatsapp: '' };
+        var dados = { tipo: '', data: '', inicio: '', termino: '', convidados: '', nome: '', email: '', whatsapp: '' };
 
         function wppTime() { var n = new Date(); return String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0'); }
         function scrollChat() { chat.scrollTop = chat.scrollHeight; }
@@ -123,6 +131,8 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
 
         function barTipo() { clearBar(); bar.innerHTML = '<select class="wpp-bar-sel" id="_wTipo">' + tipoOptsHTML() + '</select><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceTipo); document.getElementById('_wTipo').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceTipo(); }); }
         function barData() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" id="_wData" placeholder="Data do evento" readonly><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; fpInst = flatpickr('#_wData', Object.assign({}, fpOpts, { position: 'above' })); document.getElementById('_wSend').addEventListener('click', advanceData); }
+        function barInicio() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" inputmode="numeric" id="_wInicio" placeholder="Horário de início (hh:mm)" autocomplete="off" maxlength="5"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wInicio').addEventListener('input', horaMask); document.getElementById('_wSend').addEventListener('click', advanceInicio); document.getElementById('_wInicio').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceInicio(); }); }
+        function barTermino() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" inputmode="numeric" id="_wTermino" placeholder="Horário de término (hh:mm)" autocomplete="off" maxlength="5"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wTermino').addEventListener('input', horaMask); document.getElementById('_wSend').addEventListener('click', advanceTermino); document.getElementById('_wTermino').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceTermino(); }); }
         function barConv() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="number" id="_wConv" placeholder="N° de Pessoas" min="1" max="9999"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceConv); document.getElementById('_wConv').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceConv(); }); }
         function barSeguir() { clearBar(); bar.innerHTML = '<button class="wpp-bar-full" id="_wSeguir"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Seguir</button>'; document.getElementById('_wSeguir').addEventListener('click', goPhase2); }
         function barNome() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" id="_wNome" placeholder="Nome" autocomplete="off" maxlength="100"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceNome); document.getElementById('_wNome').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceNome(); }); }
@@ -136,7 +146,9 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
         }
 
         function advanceTipo() { var el = document.getElementById('_wTipo'), v = el.value; if (!v) { shake(el); return; } dados.tipo = v; addSent(v, 1); barData(); }
-        function advanceData() { var el = document.getElementById('_wData'); if (!fpInst || !fpInst.selectedDates.length) { shake(el); return; } dados.data = el.value; addSent(el.value, 1); barConv(); }
+        function advanceData() { var el = document.getElementById('_wData'); if (!fpInst || !fpInst.selectedDates.length) { shake(el); return; } dados.data = el.value; addSent(el.value, 1); barInicio(); }
+        function advanceInicio() { var el = document.getElementById('_wInicio'), v = el.value.trim(); if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(v)) { shake(el); return; } dados.inicio = v; addSent('Início às ' + v, 1); barTermino(); }
+        function advanceTermino() { var el = document.getElementById('_wTermino'), v = el.value.trim(); if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(v)) { shake(el); return; } dados.termino = v; addSent('Término às ' + v, 1); barConv(); }
         function advanceConv() { var el = document.getElementById('_wConv'), v = el.value.trim(); if (!v || isNaN(Number(v)) || Number(v) < 1) { shake(el); return; } dados.convidados = v; addSent(v + ' pessoas', 1); barSeguir(); }
         function goPhase2() { clearBar(); bar.style.visibility = 'hidden'; showTyping(2).then(function () { addRecv('<p>Perfeito! Agora me informe seus dados de contato para continuarmos.</p>', 2); barNome(); bar.style.visibility = ''; }); }
         function advanceNome() { var el = document.getElementById('_wNome'), v = el.value.trim(); if (v.length < 2) { shake(el); return; } dados.nome = v; addSent(v, 2); barEmail(); }
@@ -148,11 +160,13 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
             var txt = 'Olá! Gostaria de saber mais sobre a Casa Voss.%0A%0A';
             txt += '*Tipo de evento:* ' + encodeURIComponent(dados.tipo) + '%0A';
             txt += '*Data do evento:* ' + encodeURIComponent(dados.data) + '%0A';
+            txt += '*Horário de início:* ' + encodeURIComponent(dados.inicio) + '%0A';
+            txt += '*Horário de término:* ' + encodeURIComponent(dados.termino) + '%0A';
             txt += '*Convidados:* ' + encodeURIComponent(dados.convidados) + '%0A%0A';
             txt += '*Nome:* ' + encodeURIComponent(dados.nome) + '%0A';
             txt += '*E-mail:* ' + encodeURIComponent(dados.email) + '%0A';
             txt += '*WhatsApp:* ' + encodeURIComponent(dados.whatsapp);
-            window.dataLayer.push({ event: 'wpp_popup_iniciar', wpp_popup_tipo: dados.tipo, wpp_popup_data: dados.data, wpp_popup_convidados: dados.convidados, wpp_popup_nome: dados.nome, wpp_popup_email: dados.email, wpp_popup_whatsapp: dados.whatsapp.replace(/\D/g, '') });
+            window.dataLayer.push({ event: 'wpp_popup_iniciar', wpp_popup_tipo: dados.tipo, wpp_popup_data: dados.data, wpp_popup_horario_inicio: dados.inicio, wpp_popup_horario_termino: dados.termino,wpp_popup_convidados: dados.convidados, wpp_popup_nome: dados.nome, wpp_popup_email: dados.email, wpp_popup_whatsapp: dados.whatsapp.replace(/\D/g, '') });
             var sU = JSON.parse(sessionStorage.getItem('dmove_tracking') || sessionStorage.getItem('casavoss_utms') || '{}');
             var firstVisit = localStorage.getItem('dmove_first_visit') || sessionStorage.getItem('dmove_first_visit') || '';
             var wppPayload = {
@@ -161,6 +175,8 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 'E-mail': dados.email.toLowerCase(),
                 'Tipo de evento': dados.tipo,
                 'Data do evento': dados.data,
+                'Horário de início': dados.inicio,
+                'Horário de término': dados.termino,
                 'Convidados': dados.convidados,
                 'Fonte': 'Site Casa Voss / Popup WhatsApp',
                 'form_id': 'wpp_popup',
@@ -183,7 +199,7 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
             overlay.classList.add('open'); wrap.classList.add('open');
             document.body.style.overflow = 'hidden';
             chat.innerHTML = '';
-            dados = { tipo: '', data: '', convidados: '', nome: '', email: '', whatsapp: '' };
+            dados = { tipo: '', data: '', inicio: '', termino: '', convidados: '', nome: '', email: '', whatsapp: '' };
             addRecv('<p>Olá! 👋</p><p>Preencha as informações abaixo para iniciar a conversa e saber mais sobre o seu evento.</p>', 1);
             barTipo();
         }

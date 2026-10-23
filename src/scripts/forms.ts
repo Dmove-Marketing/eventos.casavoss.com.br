@@ -12,6 +12,8 @@ const FIELD_LABEL: Record<string, string> = {
   mensagem:   'Mensagem',
   fonte:      'Fonte',
   horario:    'Horário',
+  horario_inicio:  'Horário de início',
+  horario_termino: 'Horário de término',
   assunto:    'Assunto',
   cargo:      'Cargo',
   cidade:     'Cidade',
@@ -128,13 +130,13 @@ export function initForms() {
       // Atualiza Fonte no momento do submit (garante cookies atualizados)
       populateFonteFields(form);
 
-      // Validação de obrigatórios
+      // Validação de obrigatórios (e do pattern, quando o campo define um — ex.: horário hh:mm)
       let valid = true;
       form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[required]').forEach(el => {
-        const empty = el.value.trim() === '';
+        const invalid = el.value.trim() === '' || (el instanceof HTMLInputElement && el.validity.patternMismatch);
         const group = el.closest('[class*="form-group"]') as HTMLElement | null;
         const err   = group?.querySelector<HTMLElement>('[class*="field-error"]');
-        if (empty) {
+        if (invalid) {
           valid = false;
           el.classList.add('error');
           err?.classList.add('visible');

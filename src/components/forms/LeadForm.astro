@@ -20,6 +20,8 @@ interface Field {
   errorText?: string;
   errorId?: string;
   maxlength?: number;
+  inputmode?: 'numeric' | 'tel' | 'email' | 'text' | 'decimal' | 'search' | 'url' | 'none';
+  pattern?: string;
   min?: string;
   max?: string;
   readonly?: boolean;
@@ -150,6 +152,8 @@ const groupCls  = (full?: boolean) => {
                     required={f.required}
                     autocomplete={f.autocomplete}
                     maxlength={f.maxlength}
+                    inputmode={f.inputmode}
+                    pattern={f.pattern}
                     min={f.min}
                     max={f.max}
                     readonly={f.readonly}
@@ -189,6 +193,8 @@ const groupCls  = (full?: boolean) => {
               required={f.required}
               autocomplete={f.autocomplete}
               maxlength={f.maxlength}
+              inputmode={f.inputmode}
+              pattern={f.pattern}
               min={f.min}
               max={f.max}
               readonly={f.readonly}

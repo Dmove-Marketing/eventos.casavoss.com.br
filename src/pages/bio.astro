@@ -3,6 +3,7 @@
 import '../styles/bio.css';
 import Img from '../components/ui/Img.astro';
 import LeadForm from '../components/forms/LeadForm.astro';
+import { horarioRow } from '../components/forms/horarios';
 import GTMHead from '../components/tracking/GTMHead.astro';
 import GTMBody from '../components/tracking/GTMBody.astro';
 import config from '../../config.json';
@@ -99,6 +100,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
                             ]
                         },
                         { name: 'form_fields[data]', id: 'Data', type: 'text', label: 'Data do evento', placeholder: 'Data do evento', readonly: true, required: true, full: true, errorText: 'Informe a data do evento.', errorId: 'errData' },
+                        horarioRow,
                         { name: 'form_fields[convidados]', id: 'Convidados', type: 'number', label: 'Convidados', placeholder: 'N° de Pessoas', required: true, full: true, errorText: 'Informe o número de pessoas.', errorId: 'errConvidados' },
                         { name: 'form_fields[mensagem]', id: 'Mensagem', type: 'textarea', label: 'Mensagem', placeholder: 'Detalhes adicionais: (Não obrigatório)', rows: 4, full: true },
                         { name: 'form_fields[fonte]', id: 'Fonte', type: 'hidden', value: 'Landing page/bio' },
