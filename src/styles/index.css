@@ -238,14 +238,13 @@
             z-index: 2;
             padding: 0 60px 80px;
             max-width: 800px;
-            opacity: 0;
+            /* Sem opacity:0 inicial — o h1 é o LCP e precisa pintar já no primeiro frame */
             transform: translateY(30px);
-            animation: fadeUp 1s ease .4s forwards
+            animation: fadeUp .8s ease forwards
         }
 
         @keyframes fadeUp {
             to {
-                opacity: 1;
                 transform: translateY(0)
             }
         }
