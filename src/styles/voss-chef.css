@@ -330,7 +330,7 @@ nav#navbar.scrolled {
     font-family: 'Apparat', 'Inter', sans-serif;
     font-size: 38px;
     font-weight: 300;
-    color: var(--bege);
+    color: var(--verde);
     display: block;
     line-height: 1;
     letter-spacing: -.5px;
@@ -341,8 +341,8 @@ nav#navbar.scrolled {
     font-size: 10px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--bege-escuro);
-    opacity: .6;
+    color: var(--verde);
+    opacity: .85;
     margin-top: 8px;
     display: block;
     font-weight: 300;
@@ -1087,7 +1087,7 @@ nav#navbar.scrolled {
 .vosschef-form-footer {
     font-family: 'Inter', sans-serif;
     font-size: 11px;
-    color: rgba(255, 255, 255, .3);
+    color: rgba(255, 255, 255, .6);
     text-align: center;
     margin-top: 14px;
     line-height: 1.6;
@@ -1810,3 +1810,6 @@ footer {
         padding: 14px 24px;
     }
 }
+
+/* Contraste mínimo WCAG AA (4.5:1) sobre o fundo bege */
+.gastro-content .section-tag { color: #7d5f37; }

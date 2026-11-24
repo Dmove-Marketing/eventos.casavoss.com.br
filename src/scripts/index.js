@@ -42,7 +42,13 @@ var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
                 }, { rootMargin: '800px 0px' });
                 io.observe(alvo);
             } else { initFpMain(); }
-            alvo.addEventListener('focusin', initFpMain, { once: true });
+            alvo.addEventListener('focusin', function (ev) {
+        var campo = ev.target;
+        initFpMain().then(function (fp) {
+            /* clique no campo antes do carregamento: abre o calendário assim que ficar pronto */
+            if (fp && campo && campo.id === 'Data' && document.activeElement === campo) fp.open();
+        });
+    }, { once: true });
         })();
 
         function phoneMask(e) {

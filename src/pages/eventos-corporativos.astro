@@ -28,10 +28,16 @@ const trackingEnabled = config.tracking?.enabled !== false;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://use.typekit.net/ruo8uhd.css" />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preload" as="image" href="/video-hero-poster.webp" fetchpriority="high" />
+    <!-- Fontes carregadas sem bloquear a renderização (media=print → all no onload) -->
+    <link rel="stylesheet" href="https://use.typekit.net/ruo8uhd.css" media="print" onload="this.media='all'" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/flatpickr.min.css" />
+        rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+        <link rel="stylesheet" href="https://use.typekit.net/ruo8uhd.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700&display=swap" rel="stylesheet" />
+    </noscript>
 
     {trackingEnabled && gtmId && <GTMHead gtmId={gtmId} />}
 </head>
@@ -40,7 +46,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
     {trackingEnabled && gtmId && <GTMBody gtmId={gtmId} />}
 
     <nav id="navbar">
-        <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={180} class="nav-logo-img" /></a>
+        <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={360} class="nav-logo-img" /></a>
         <ul class="nav-links">
             <li><a href="#espacos">Espaços</a></li>
             <li><a href="#experiencia">Experiências</a></li>
@@ -61,7 +67,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
     </div>
 
     <section class="hero">
-        <video class="hero-bg" autoplay muted loop playsinline>
+        <video class="hero-bg" autoplay muted loop playsinline poster="/video-hero-poster.webp">
             <source src="/video-hero-v2.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
@@ -234,7 +240,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
             <div class="dif-card">
                 <div class="dif-card-icon"><svg viewBox="0 0 24 24">
                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                        <path d="M18 9h1.5a2.5 2.5 0 0 0-5H18" />
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
                         <path d="M4 22h16" />
                         <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
                         <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
@@ -338,7 +344,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
                 <stop offset="1" stop-color="#60d66a" />
             </linearGradient>
             <path fill="url(#a)"
-                d="M27.875 1190.114l82.211-300.18c-50.719-87.852-77.391-187.523-77.359-289.602.133-319.398 260.078-579.25 579.469-579.25 155.016.07 300.508 60.398 409.898 169.891 109.414 109.492 169.633 255.031 169.57 409.812-.133 319.406-260.094 579.281-579.445 579.281-.023 0 .016 0 0 0 0h-.258c-96.977-.031-192.266-24.375-276.898-70.5l-307.188 80.548z" />
+                d="M27.875 1190.114l82.211-300.18c-50.719-87.852-77.391-187.523-77.359-289.602.133-319.398 260.078-579.25 579.469-579.25 155.016.07 300.508 60.398 409.898 169.891 109.414 109.492 169.633 255.031 169.57 409.812-.133 319.406-260.094 579.281-579.445 579.281-.023 0 .016 0 0 0h-.258c-96.977-.031-192.266-24.375-276.898-70.5l-307.188 80.548z" />
             <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFF"
                 d="M462.273 349.294c-11.234-24.977-23.062-25.477-33.75-25.914-8.742-.375-18.75-.352-28.742-.352-10 0-26.25 3.758-39.992 18.766-13.75 15.008-52.5 51.289-52.5 125.078 0 73.797 53.75 145.102 61.242 155.117 7.5 10 103.758 166.266 256.203 226.383 126.695 49.961 152.477 40.023 179.977 37.523s88.734-36.273 101.234-71.297c12.5-35.016 12.5-65.031 8.75-71.305-3.75-6.25-13.75-10-28.75-17.5s-88.734-43.789-102.484-48.789-23.75-7.5-33.75 7.516c-10 15-38.727 48.773-47.477 58.773-8.75 10.023-17.5 11.273-32.5 3.773-15-7.523-63.305-23.344-120.609-74.438-44.586-39.75-74.688-88.844-83.438-103.859-8.75-15-.938-23.125 6.586-30.602 6.734-6.719 15-17.508 22.5-26.266 7.484-8.758 9.984-15.008 14.984-25.008 5-10.016 2.5-18.773-1.25-26.273s-32.898-81.67-46.234-111.326z" />
             <path fill="#FFF"
@@ -367,7 +373,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
 
     <footer>
         <div class="footer-brand">
-            <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={180} class="nav-logo-img" /></a>
+            <a href="#" class="nav-logo"><Img src="logo.png" alt="Casa Voss" width={360} class="nav-logo-img" /></a>
             <p class="footer-desc">Espaço de eventos corporativos em São Paulo. Sofisticação, acolhimento e experiências
                 únicas para a sua marca.</p>
             <button class="footer-trabalhe-btn" disabled>Trabalhe conosco</button>
@@ -392,7 +398,6 @@ const trackingEnabled = config.tracking?.enabled !== false;
         </div>
     </footer>
 
-    <script is:inline src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     
 
   <script>

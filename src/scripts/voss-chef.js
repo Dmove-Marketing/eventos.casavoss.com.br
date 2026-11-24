@@ -1,3 +1,5 @@
+/* CSS do flatpickr: import estático (vai inline no HTML; só o JS do flatpickr é carregado sob demanda) */
+import 'flatpickr/dist/flatpickr.min.css';
 /* Scripts para a página Voss Chef */
 
 var N8N_WEBHOOK_URL = 'https://server3n8n.dmove.com.br/webhook/casa-voss';
@@ -50,19 +52,41 @@ if (hamburger && mobileMenu) {
     });
 }
 
-// Flatpickr & Input Phone Mask
-if (typeof flatpickr !== 'undefined') {
-    var fpLocale = {
-        weekdays: { shorthand: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'], longhand: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'] },
-        months: { shorthand: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'], longhand: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'] },
-        firstDayOfWeek: 1, rangeSeparator: ' até ', ordinal: function () { return 'º'; }
-    };
-    var fpOpts = { disableMobile: true, dateFormat: 'd/m/Y', locale: fpLocale, minDate: 'today', allowInput: false };
-    var dateInput = document.getElementById('Data');
-    if (dateInput) {
-        var fpMain = flatpickr('#Data', fpOpts);
+// Flatpickr (carregado sob demanda) & Input Phone Mask
+var fpLocale = {
+    weekdays: { shorthand: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'], longhand: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'] },
+    months: { shorthand: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'], longhand: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'] },
+    firstDayOfWeek: 1, rangeSeparator: ' até ', ordinal: function () { return 'º'; }
+};
+var fpOpts = { disableMobile: true, dateFormat: 'd/m/Y', locale: fpLocale, minDate: 'today', allowInput: false };
+/* flatpickr é carregado sob demanda (fora do caminho crítico de renderização) */
+var fpMain = null, fpPromise = null;
+function loadFlatpickr() {
+    if (!fpPromise) {
+        fpPromise = import('flatpickr').then(function (m) { return m.default; });
     }
+    return fpPromise;
 }
+function initFpMain() {
+    return loadFlatpickr().then(function (fp) { if (!fpMain && document.getElementById('Data')) fpMain = fp('#Data', fpOpts); return fpMain; });
+}
+(function () {
+    var alvo = document.getElementById('contato');
+    if (!alvo) return;
+    if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+            if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); initFpMain(); }
+        }, { rootMargin: '800px 0px' });
+        io.observe(alvo);
+    } else { initFpMain(); }
+    alvo.addEventListener('focusin', function (ev) {
+        var campo = ev.target;
+        initFpMain().then(function (fp) {
+            /* clique no campo antes do carregamento: abre o calendário assim que ficar pronto */
+            if (fp && campo && campo.id === 'Data' && document.activeElement === campo) fp.open();
+        });
+    }, { once: true });
+})();
 
 function phoneMask(e) {
     var v = e.target.value.replace(/\D/g, '').substring(0, 11);
@@ -185,7 +209,7 @@ if (floatBtn && chat && bar && overlay && wrap) {
     function tipoOptsHTML() { return '<option value="" disabled selected>Tipo de evento</option>' + TIPOS.map(function (t) { return '<option value="' + t + '">' + t + '</option>'; }).join(''); }
 
     function barTipo() { clearBar(); bar.innerHTML = '<select class="wpp-bar-sel" id="_wTipo">' + tipoOptsHTML() + '</select><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceTipo); document.getElementById('_wTipo').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceTipo(); }); }
-    function barData() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" id="_wData" placeholder="Data do evento" readonly><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; if (typeof flatpickr !== 'undefined') fpInst = flatpickr('#_wData', Object.assign({}, fpOpts, { position: 'above' })); document.getElementById('_wSend').addEventListener('click', advanceData); }
+    function barData() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" id="_wData" placeholder="Data do evento" readonly><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceData); loadFlatpickr().then(function (fp) { if (document.getElementById('_wData') && !fpInst) fpInst = fp('#_wData', Object.assign({}, fpOpts, { position: 'above' })); }); }
     function barInicio() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" inputmode="numeric" id="_wInicio" placeholder="Horário de início (hh:mm)" autocomplete="off" maxlength="5"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wInicio').addEventListener('input', horaMask); document.getElementById('_wSend').addEventListener('click', advanceInicio); document.getElementById('_wInicio').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceInicio(); }); }
     function barTermino() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="text" inputmode="numeric" id="_wTermino" placeholder="Horário de término (hh:mm)" autocomplete="off" maxlength="5"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wTermino').addEventListener('input', horaMask); document.getElementById('_wSend').addEventListener('click', advanceTermino); document.getElementById('_wTermino').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceTermino(); }); }
     function barConv() { clearBar(); bar.innerHTML = '<input class="wpp-bar-inp" type="number" id="_wConv" placeholder="N° de Pessoas" min="1" max="9999"><button class="wpp-bar-send" id="_wSend">' + svgAR + '</button>'; document.getElementById('_wSend').addEventListener('click', advanceConv); document.getElementById('_wConv').addEventListener('keydown', function (e) { if (e.key === 'Enter') advanceConv(); }); }
