@@ -9,7 +9,8 @@ export default defineConfig({
 
   // Build otimizado
   build: {
-    inlineStylesheets: 'auto',
+    // Inline do CSS no HTML: elimina a requisição de CSS que bloqueia a renderização
+    inlineStylesheets: 'always',
   },
 
   // Dev server

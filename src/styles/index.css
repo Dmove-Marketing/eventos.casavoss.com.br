@@ -362,7 +362,7 @@
         }
 
         .sobre-img {
-            background-image: url('https://media.dmove.com.br/clients/casavoss/photos/sobre_site.webp');
+            background-image: url('https://media.dmove.com.br/api/public/resize/1200/clients/casavoss/photos/sobre_site.webp');
             background-size: cover;
             background-position: center;
             background-color: var(--verde-medio);
@@ -1911,7 +1911,7 @@
             max-width: 260px
         }
 
-        .footer-col h4 {
+        .footer-col h3 {
             font-family: 'Apparat', 'Inter', sans-serif;
             font-size: 9px;
             letter-spacing: 3px;
