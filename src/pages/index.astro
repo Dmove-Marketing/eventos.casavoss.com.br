@@ -2,6 +2,7 @@
 // Componente gerado a partir de: eventos-corporativos.html
 import '../styles/index.css';
 import Img from '../components/ui/Img.astro';
+import CdnSlides from '../components/ui/CdnSlides.astro';
 import LeadForm from '../components/forms/LeadForm.astro';
 import { horarioRow } from '../components/forms/horarios';
 import StaticMap from '../components/ui/StaticMap.astro';
@@ -111,19 +112,19 @@ const trackingEnabled = config.tracking?.enabled !== false;
         </div>
         <div class="espacos-grid">
             <div class="espaco-card">
-                <div class="espaco-card-img"><Img src="https://media.dmove.com.br/clients/casavoss/photos/ambar.webp" alt="Espaço Âmbar Casa Voss" width={1200} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
+                <div class="espaco-card-img"><CdnSlides base="https://media.dmove.com.br/clients/casavoss/photos/ambar" count={5} alt="Espaço Âmbar Casa Voss" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Âmbar</span><span class="espaco-cap">Um auditório contemporâneo de 170m² para até 96 convidados, ideal para apresentações, treinamentos e lançamentos, com formato plenária ou mesas redondas, combinando tecnologia, conforto e estética para potencializar a experiência.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><Img src="https://media.dmove.com.br/clients/casavoss/photos/salvia.webp" alt="Espaço Sálvia Casa Voss" width={1200} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
+                <div class="espaco-card-img"><CdnSlides base="https://media.dmove.com.br/clients/casavoss/photos/salvia" count={4} alt="Espaço Sálvia Casa Voss" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Sálvia</span><span class="espaco-cap">Um ambiente intimista de 77m² para até 36 convidados, ideal para workshops, mentorias e reuniões estratégicas, pensado para encontros que pedem mais conexão.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><Img src="https://media.dmove.com.br/clients/casavoss/photos/gourmet.webp" alt="Espaço Gourmet Casa Voss" width={1200} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 34vw, 24vw" /></div>
+                <div class="espaco-card-img"><CdnSlides base="https://media.dmove.com.br/clients/casavoss/photos/gourmet" count={5} alt="Espaço Gourmet Casa Voss" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Espaço Gourmet</span><span class="espaco-cap">Um
                         espaço onde o networking se mistura à gastronomia, <b>ideal para coffee breaks, almoços e
                             ativações com chefs convidados.</b></span><button class="espaco-card-btn"
@@ -131,13 +132,13 @@ const trackingEnabled = config.tracking?.enabled !== false;
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><Img src="https://media.dmove.com.br/clients/casavoss/photos/lounge.webp" alt="Garden Lounge Casa Voss" width={1200} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
+                <div class="espaco-card-img"><CdnSlides base="https://media.dmove.com.br/clients/casavoss/photos/lounge" count={5} alt="Garden Lounge Casa Voss" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Garden Lounge</span><span class="espaco-cap">Um espaço ao ar livre de 85m² para até 36 convidados, que combina natureza e acolhimento, ideal para workshops, treinamentos e reuniões estratégicas mais intimistas.</span><button class="espaco-card-btn"
                         onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Solicitar
                         orçamento</button></div>
             </div>
             <div class="espaco-card">
-                <div class="espaco-card-img"><Img src="https://media.dmove.com.br/clients/casavoss/photos/rooftop.webp" alt="Rooftop Casa Voss" width={1200} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
+                <div class="espaco-card-img"><CdnSlides base="https://media.dmove.com.br/clients/casavoss/photos/rooftop" count={5} alt="Rooftop Casa Voss" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 68vw, 46vw" /></div>
                 <div class="espaco-card-body"><span class="espaco-name">Rooftop</span><span class="espaco-cap">Com 210m²
                         de terraço e 42m² de área coberta, um espaço amplo, versátil e cercado de verde, ideal para
                         almoços, coquetéis e celebrações ao ar livre.</span><button class="espaco-card-btn"
@@ -445,6 +446,7 @@ const trackingEnabled = config.tracking?.enabled !== false;
 
   <script>
     import '../scripts/index.js';
+    import '../scripts/cdn-slides.ts';
   </script>
 </body>
 

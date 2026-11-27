@@ -1,0 +1,44 @@
+---
+/**
+ * Troca de imagens (crossfade) a partir de fotos numeradas no CDN media.dmove.com.br.
+ * Gera <base>_01.webp ... <base>_NN.webp, exibidas em ordem numérica.
+ *
+ * - A 1ª imagem é renderizada normalmente (lazy, com srcset).
+ * - As demais saem só com data-src/data-srcset: o script de slides
+ *   (src/scripts/cdn-slides.ts) carrega cada uma pouco antes de ela aparecer.
+ * - O contêiner precisa ter position:relative e altura própria (ex.: aspect-ratio).
+ */
+import Img from './Img.astro';
+import { buildResizeUrl, buildSrcset } from '../../lib/media-cdn';
+
+interface Props {
+  /** URL base no CDN, sem o sufixo _NN.webp. Ex: https://media.dmove.com.br/clients/casavoss/photos/ambar */
+  base: string;
+  /** Quantidade de fotos (01..count) */
+  count: number;
+  alt: string;
+  width?: number;
+  sizes?: string;
+  /** Intervalo entre trocas, em ms */
+  interval?: number;
+}
+
+const { base, count, alt, width = 1200, sizes = '100vw', interval = 4500 } = Astro.props;
+const urls = Array.from({ length: count }, (_, i) => `${base}_${String(i + 1).padStart(2, '0')}.webp`);
+const [first, ...rest] = urls;
+---
+
+<div class="cdn-slides" data-cdn-slides data-interval={interval}>
+  <Img src={first} alt={alt} width={width} sizes={sizes} class="cdn-slide ativo" />
+  {rest.map((url) => (
+    <img
+      class="cdn-slide"
+      data-src={buildResizeUrl(url, Math.min(width, 2048))}
+      data-srcset={buildSrcset(url, width)}
+      sizes={sizes}
+      alt=""
+      width={width}
+      decoding="async"
+    />
+  ))}
+</div>

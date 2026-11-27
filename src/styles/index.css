@@ -453,22 +453,39 @@
         }
 
         .espaco-card-img {
+            position: relative;
             width: 100%;
             overflow: hidden;
-            aspect-ratio: 2/3
+            aspect-ratio: 2/3;
+            background-color: var(--verde)
+        }
+
+        /* Troca de imagens (CdnSlides): fotos empilhadas, só a .ativo visível */
+        .espaco-card-img .cdn-slides {
+            position: absolute;
+            inset: 0
         }
 
         .espaco-card-img img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform .7s ease, opacity .5s;
+            transition: transform .7s ease, opacity 1.2s ease;
+            opacity: 0
+        }
+
+        .espaco-card-img img.ativo {
             opacity: .88
         }
 
         .espaco-card:hover .espaco-card-img img {
-            transform: scale(1.06);
+            transform: scale(1.06)
+        }
+
+        .espaco-card:hover .espaco-card-img img.ativo {
             opacity: .55
         }
 
